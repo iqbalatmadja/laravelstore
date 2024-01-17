@@ -60,4 +60,24 @@ class AuthController extends Controller
         return redirect()->route('index')
             ->with('msg','You have logged out successfully!');
     }
+
+    public function postLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        if(Auth::attempt($credentials))
+        {
+            $request->session()->regenerate();
+            return redirect()->route('index')
+                ->with('msg','You have successfully logged in!');
+        }else{
+            return redirect()->route('login')
+                ->with('msg','Your provided credentials do not match our records');
+        }
+    }
 }
+
+
+#EOF

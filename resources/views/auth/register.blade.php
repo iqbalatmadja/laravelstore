@@ -12,6 +12,9 @@
         <h5>{{ session('msg') }}</h5>
     </div>
     @endif
+    <div class="mb-3">
+        <h3>Register New Account</h3>
+    </div>
 
     <div class="mb-3">
         <label for="name" class="form-label">Full Name</label>
