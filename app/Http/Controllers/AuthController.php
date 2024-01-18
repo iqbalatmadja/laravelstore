@@ -77,6 +77,40 @@ class AuthController extends Controller
                 ->with('msg','Your provided credentials do not match our records');
         }
     }
+
+    public function profile(): View
+    {
+        $id = Auth::user()->id;
+        $user = User::findOrFail($id);
+        $profile = ['user'=>$user];
+        return view('auth.profile',$profile);
+    }
+
+    public function postProfile(Request $request)
+    {
+        $customMessages = [
+            'name.required' => 'The Name field is required',
+            'name.max' => 'name field max 64 characters'
+        ];
+        $request->validate([
+            'name' => 'required|string|max:64',
+        ],$customMessages);
+        
+        $id = Auth::user()->id;
+        $user = User::findOrFail($id);
+        if(!empty($user)){
+            $user->name = $request->name;
+            if($user->update()){
+                return redirect()->route('profile')->with('msg', 'Profile updated');
+            }else{
+                echo 'error';
+            };
+    
+        }else{
+            echo 'user not found';
+        }
+
+    }
 }
 
 
